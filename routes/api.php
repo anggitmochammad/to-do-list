@@ -24,15 +24,15 @@ Route::post('/login', LoginController::class);
 
 Route::middleware('auth:sanctum')->group(function () {
 
-    Route::apiResource('checklist', ChecklistController::class)->only(['index','store','destroy']);
-    Route::get('checklist/{checklist}/item', [ChecklistController::class, 'show']);
+    Route::apiResource('checklist', ChecklistController::class)->only(['index', 'store', 'destroy']);
 
-    Route::get('checklist/{checklist}/item/{checklistItem}', [ChecklistItemController::class, 'show']);
-    Route::post('checklist/{checklist}/item', [ChecklistItemController::class, 'store']);
-    Route::delete('checklist/{checklist}/item', [ChecklistItemController::class, 'destroy']);
-    Route::put('checklist/{checklist}/item/{checklistItem}', [ChecklistItemController::class, 'updateStatus'])->name('updateStatus');
-    Route::put('checklist/{checklist}/item/rename/{checklistItem}', [ChecklistItemController::class, 'updateName']);
-    
+    Route::prefix('checklist/{checklist}/item')->group(function () {
+        Route::get('', [ChecklistController::class, 'show']);
 
+        Route::get('/{checklistItem}', [ChecklistItemController::class, 'show']);
+        Route::post('/', [ChecklistItemController::class, 'store']);
+        Route::delete('/', [ChecklistItemController::class, 'destroy']);
+        Route::put('/{checklistItem}', [ChecklistItemController::class, 'updateStatus'])->name('updateStatus');
+        Route::put('/rename/{checklistItem}', [ChecklistItemController::class, 'updateName']);
+    });
 });
-
