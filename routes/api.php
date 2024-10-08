@@ -27,7 +27,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('checklist', ChecklistController::class)->only(['index', 'store', 'destroy']);
 
     Route::prefix('checklist/{checklist}/item')->group(function () {
-        Route::get('/', [ChecklistController::class, 'show']);
+        Route::get('/', [ChecklistItemController::class, 'index']);
 
         Route::get('/{checklistItem}', [ChecklistItemController::class, 'show']);
         Route::post('/', [ChecklistItemController::class, 'store']);

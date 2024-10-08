@@ -3,18 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ItemStatus;
-use App\Http\Requests\ChecklistItemRequest;
-use App\Http\Requests\CheckListItemUpdateRequest;
-use App\Http\Resources\ChecklistItemResource;
 use App\Models\Checklist;
 use App\Models\ChecklistItem;
+use Spatie\QueryBuilder\QueryBuilder;
+use App\Http\Requests\ChecklistItemRequest;
+use App\Http\Resources\ChecklistItemResource;
+use App\Http\Requests\CheckListItemUpdateRequest;
 
 class ChecklistItemController extends Controller
 {
 
-    public function index()
+    public function index($checklistId)
     {
+        $checkListItem = QueryBuilder::for(ChecklistItem::where('checklist_id', $checklistId))->paginate(15);
 
+        return ChecklistItemResource::collection($checkListItem);
     }
 
     public function store(Checklist $checklist, ChecklistItemRequest $request)
