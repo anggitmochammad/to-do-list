@@ -24,11 +24,12 @@ Route::post('/login', LoginController::class);
 
 Route::middleware('auth:sanctum')->group(function () {
 
-    Route::apiResource('checklist', ChecklistController::class);
+    Route::apiResource('checklist', ChecklistController::class)->only(['index','store','destroy']);
+    Route::get('checklist/{checklist}/item', [ChecklistController::class, 'show']);
 
+    Route::get('checklist/{checklist}/item/{checklistItem}', [ChecklistItemController::class, 'show']);
     Route::post('checklist/{checklist}/item', [ChecklistItemController::class, 'store']);
     Route::delete('checklist/{checklist}/item', [ChecklistItemController::class, 'destroy']);
-    Route::get('checklist/{checklist}/item/{checklistItem}', [ChecklistItemController::class, 'show']);
     Route::put('checklist/{checklist}/item/{checklistItem}', [ChecklistItemController::class, 'updateStatus'])->name('updateStatus');
     Route::put('checklist/{checklist}/item/rename/{checklistItem}', [ChecklistItemController::class, 'updateName']);
     
